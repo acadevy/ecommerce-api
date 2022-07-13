@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema(
       default: "user",
     },
     contactNumber: { type: String },
-    pofilePicture: { type: String },
+    profilePicture: { type: String },
   },
   { timestamps: true }
 );
