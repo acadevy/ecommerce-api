@@ -5,6 +5,8 @@ const env              = require('dotenv');
 // /* Relative imports */
 const user_router       = require('./routes/users');
 const admin_router      = require('./routes/admin/admin_routes');
+const category_router      = require('./routes/category');
+
 
 /* setup express */
 const app = express();
@@ -27,6 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 // /** Routes */
 app.use('/api/users', user_router);
 app.use('/api/admin', admin_router);
+app.use('/api/categories',category_router);
 
 app.use((req, res) => {
     return res.status(404).json({ error: 'Not found' });
