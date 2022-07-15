@@ -2,15 +2,17 @@ const multer = require("multer");
 const shortid = require("shortid");
 const path = require("path");
 
+const upload = multer({
+  limits: {
+    fileSize: 1000000
+  },
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      return cb(new Error('Please upload an image!'));
+    }
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, path.join(path.dirname(__dirname), "uploads"));
-    },
-    filename: function (req, file, cb) {
-      cb(null, shortid.generate() + "-" + file.originalname);
-    },
-  });
-  
-  
-exports.upload = multer({ storage });
+    cb(undefined, true);
+  }
+});
+
+module.exports = upload;

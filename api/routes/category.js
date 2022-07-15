@@ -14,35 +14,36 @@ const router = express.Router();
 const shortid = require("shortid");
 const path = require("path");
 const multer = require("multer");
+const upload = require('../middleware/config');
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(path.dirname(__dirname), "uploads"));
-  },
-  filename: function (req, file, cb) {
-    cb(null, shortid.generate() + "-" + file.originalname);
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, path.join(path.dirname(__dirname), "uploads"));
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, shortid.generate() + "-" + file.originalname);
+//   },
+// });
 
-const upload = multer({ storage });
+// const upload = multer({ storage });
 
 router.post(
-  "/category/create",
+  "/create",
   requireSignin,
   superAdminMiddleware,
   upload.single("categoryImage"),
   addCategory
 );
-router.get("/category/getcategory", getCategories);
+router.get("/getcategory", getCategories);
 router.post(
-  "/category/update",
+  "/update",
   requireSignin,
   superAdminMiddleware,
   upload.array("categoryImage"),
   updateCategories
 );
 router.post(
-  "/category/delete",
+  "/delete",
   requireSignin,
   superAdminMiddleware,
   deleteCategories

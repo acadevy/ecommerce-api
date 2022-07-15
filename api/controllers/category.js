@@ -1,6 +1,7 @@
 const Category = require("../models/category");
 const slugify = require("slugify");
 const shortid = require("shortid");
+const sharp   = require('sharp');
 
 function createCategories(categories, parentId = null) {
   const categoryList = [];
@@ -10,7 +11,6 @@ function createCategories(categories, parentId = null) {
   } else {
     category = categories.filter((cat) => cat.parentId == parentId);
   }
-
   for (let cate of category) {
     categoryList.push({
       _id: cate._id,
@@ -25,7 +25,7 @@ function createCategories(categories, parentId = null) {
   return categoryList;
 }
 
-exports.addCategory = (req, res) => {
+exports.addCategory = async(req, res) => {
   const categoryObj = {
     name: req.body.name,
     slug: `${slugify(req.body.name)}-${shortid.generate()}`,
@@ -33,7 +33,11 @@ exports.addCategory = (req, res) => {
   };
 
   if (req.file) {
-    categoryObj.categoryImage = "/public/" + req.file.filename;
+    const buffer = await sharp(req.file.buffer)
+    .resize({ width: 250, height: 250 })
+    .png()
+    .toBuffer();
+    categoryObj.categoryImage = buffer;
   }
 
   if (req.body.parentId) {
@@ -104,8 +108,7 @@ exports.deleteCategories = async (req, res) => {
       createdBy: req.user._id,
     });
     deletedCategories.push(deleteCategory);
-  }
-
+    }
   if (deletedCategories.length == ids.length) {
     res.status(201).json({ message: "Categories removed" });
   } else {

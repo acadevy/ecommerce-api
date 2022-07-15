@@ -1,5 +1,6 @@
 const express          = require('express');
 const env              = require('dotenv');
+const path             = require('path');
 
 
 // /* Relative imports */
@@ -24,12 +25,13 @@ require("./db/mongoose");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use('/uploads', express.static(__dirname));
 
 
 // /** Routes */
 app.use('/api/users', user_router);
 app.use('/api/admin', admin_router);
-app.use('/api/categories',category_router);
+app.use('/api/category',category_router);
 
 app.use((req, res) => {
     return res.status(404).json({ error: 'Not found' });
