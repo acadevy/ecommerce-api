@@ -10,6 +10,7 @@ const category_router   = require('./routes/category');
 const product_router    = require('./routes/product');
 const address_router    = require('./routes/address');
 const cart_controller   = require('./routes/cart');
+const order_controller  = require('./routes/order');
 
 
 /* setup express */
@@ -38,6 +39,7 @@ app.use('/api/category',category_router);
 app.use('/api/products',product_router);
 app.use('/api/user',address_router);
 app.use('/api/user/cart',cart_controller);
+app.use('/api/user/orders',order_controller);
 
 app.use((req, res) => {
     return res.status(404).json({ error: 'Not found' });
