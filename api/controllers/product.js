@@ -11,10 +11,9 @@ exports.createProduct = (req, res) => {
 
   if (req.files.length > 0) {
     productPictures = req.files.map((file) => {
-      return { img: file.location };
+      return { img: file.path };
     });
   }
-
   const product = new Product({
     name: name,
     slug: slugify(name),
@@ -42,13 +41,11 @@ exports.getProductsBySlug = (req, res) => {
       if (error) {
         return res.status(400).json({ error });
       }
-
       if (category) {
         Product.find({ category: category._id }).exec((error, products) => {
           if (error) {
             return res.status(400).json({ error });
           }
-
           if (category.type) {
             if (products.length > 0) {
               res.status(200).json({
